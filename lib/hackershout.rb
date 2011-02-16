@@ -1,3 +1,5 @@
+require 'hackershout/output'
+require 'hackershout/provider'
 require 'hackershout/base'
 require 'nokogiri'
 require 'mechanize'
