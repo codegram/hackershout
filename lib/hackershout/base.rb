@@ -25,7 +25,6 @@ module Hackershout
     end
 
     def welcome_banner
-      blank
       print ":: Welcome to hackershout! ::"
       blank
     end
@@ -77,7 +76,7 @@ module Hackershout
       end.each do |provider|
         provider.publish
       end
-      print "Done. Happy hacking! :)"
+      puts "Done. Happy hacking! :)\n"
     end
 
   end

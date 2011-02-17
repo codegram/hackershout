@@ -30,7 +30,11 @@ module Hackershout
       private
 
       def check_credentials_for(provider)
-        credentials = YAML.load(File.read(File.join(File.expand_path('~'), '.hackershoutrc')))
+        credentials = if File.exists?(File.join(File.expand_path('~'), '.hackershoutrc'))
+          YAML.load(File.read(File.join(File.expand_path('~'), '.hackershoutrc')))
+        else
+          ask_for_credentials(provider)
+        end
 
         if credentials[provider.to_s] &&
              credentials[provider.to_s]["login"] &&
@@ -39,8 +43,6 @@ module Hackershout
         else
           ask_for_credentials(provider)
         end
-      rescue Errno::ENOENT # If the file doesn't even exist
-        ask_for_credentials(provider)
       end
 
       def ask_for_credentials(provider)
@@ -55,7 +57,9 @@ module Hackershout
           file.write "\n#{provider}:"
           file.write "\n  login: #{login}"
           file.write "\n  password: #{password}"
+          file.write "\n"
         end
+        { provider => { "login" => login, "password" => password } }
       end
 
     end

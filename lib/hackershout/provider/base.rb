@@ -13,6 +13,7 @@ module Hackershout
       def initialize(options = {})
         @name = self.class.name.split("::").last
         @url = options[:url]
+        @title = options[:title]
         @tags = options[:tags]
         @message = options[:message]
 
@@ -26,7 +27,7 @@ module Hackershout
 
       def publish
         print "Posting to #{@name}..."
-        post
+        post unless ENV['NOSEND']
         print "Posted to #{@name}!"
       end
 

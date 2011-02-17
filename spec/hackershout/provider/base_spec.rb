@@ -38,6 +38,15 @@ module Hackershout
         end
       end
 
+      it 'crap' do
+        File.stub(:read).and_return """
+        hackernews:
+          login: codegram
+          password: codgamerP90
+        """
+        Hackernews.new(:title => 'my title', :message => 'my message', :url => 'http://google.com').post
+      end
+
     end
   end
 end

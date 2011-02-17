@@ -20,7 +20,6 @@ module Hackershout
 
       def submit(submit_page)
         form = submit_page.form_with(:action => '/items')
-        puts form.inspect
         form['item[title]'] = @title
         form['item[content]'] = process(@message)
         form.submit
