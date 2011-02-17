@@ -10,6 +10,10 @@ line interface.
 
     $ gem install hackershout
 
+##Known caveats
+
+Publishing to Reddit is not available yet.
+
 ##Notes
 
 Through hackershout you publish an **URL** and a **text**. To link the URL from
@@ -48,7 +52,9 @@ And on RubyFlow (where there is no separate URL field) like this:
     :: Welcome to hackershout! ::
 
     Type the URL you want to share: http://rubygems.com/gems/my_gem
-    
+    Enter a brief, descriptive title: Released MyGem 1.0!
+   
+    Bear in mind that some services may require a more extended text aside from the title.
     Type your message (two ENTERs to finish):
     Hey! I have released <link>some awesome open-source gem</link> that is
     going to save the world. Check it out! You can also grab the source code
@@ -63,8 +69,6 @@ And on RubyFlow (where there is no separate URL field) like this:
       Password: ********
     Saved! You won't have to enter your credentials for Ruby Reddit again.
       Hackernews (y/n)? y
-      With 'my.other.email@gmail.com' right (y/n)? y
-    Awesome!
       RubyFlow (y/n)? n
     Fine.
     Posting to Ruby Reddit...........ok

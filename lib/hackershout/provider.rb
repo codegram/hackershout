@@ -6,7 +6,7 @@ module Hackershout
 
       def list
         {
-          :reddit     => 'Ruby Reddit',
+          # :reddit     => 'Ruby Reddit',
           :hackernews => 'Hackernews',
           :rubyflow   => 'RubyFlow',
         }
@@ -30,7 +30,32 @@ module Hackershout
       private
 
       def check_credentials_for(provider)
-         
+        credentials = YAML.load(File.read(File.join(File.expand_path('~'), '.hackershoutrc')))
+
+        if credentials[provider.to_s] &&
+             credentials[provider.to_s]["login"] &&
+             credentials[provider.to_s]["password"]
+          true
+        else
+          ask_for_credentials(provider)
+        end
+      rescue Errno::ENOENT # If the file doesn't even exist
+        ask_for_credentials(provider)
+      end
+
+      def ask_for_credentials(provider)
+        print "Sorry, I don't have your #{list[provider]} credentials."
+        print "\tLogin: "
+        login = gets.chomp.strip
+        system('stty -echo')
+        print "\tPassword: "
+        password = gets.chomp.strip
+        system('stty echo')
+        File.open(File.join(File.expand_path('~'), '.hackershoutrc'), 'a') do |file|
+          file.write "\n#{provider}:"
+          file.write "\n  login: #{login}"
+          file.write "\n  password: #{password}"
+        end
       end
 
     end

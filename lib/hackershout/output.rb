@@ -2,7 +2,7 @@ module Hackershout
   module Output
 
     def print(str)
-      $stdout.print str
+      $stdout.print "\n" + str
     end
 
     def blank

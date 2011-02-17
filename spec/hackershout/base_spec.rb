@@ -8,9 +8,11 @@ module Hackershout
         subject.stub(:welcome_banner)
         subject.stub(:ask_for_url)
         subject.stub(:ask_for_message)
+        subject.stub(:ask_for_title)
         subject.stub(:ask_for_tags)
         subject.stub(:providers_banner)
         subject.stub(:ask_for_providers)
+        subject.stub(:post_to_providers)
       end
       it 'calls welcome banner' do
         subject.should_receive(:welcome_banner)
@@ -18,6 +20,10 @@ module Hackershout
       end
       it 'calls ask_for_url' do
         subject.should_receive(:ask_for_url)
+        subject.run
+      end
+      it 'calls ask_for_title' do
+        subject.should_receive(:ask_for_title)
         subject.run
       end
       it 'calls ask_for_message' do
@@ -54,8 +60,17 @@ module Hackershout
       end
     end
 
+    describe "#ask_for_title" do
+      it 'asks for the title and returns it' do
+        subject.should_receive(:print).with("Enter a brief, descriptive title: ")
+        subject.should_receive(:gets).and_return '   Released my gem: a nifty gem to eradicate hunger!   '
+        subject.ask_for_title.should == 'Released my gem: a nifty gem to eradicate hunger!'
+      end
+    end
+
     describe "#ask_for_message" do
       it 'asks for the message and returns it' do
+        subject.should_receive(:print).with("Bear in mind that some services may require a more extended text aside from the title.")
         subject.should_receive(:print).with("Type your message (two ENTERs to finish): ")
         subject.should_receive(:gets).and_return("""
 Hey! I have released <link>some awesome open-source gem</link> that is
@@ -91,6 +106,30 @@ on <a href=\"http://github.com/me/my_gem\">Github</a> if you want.
         Provider.should_receive(:wants?).with(:rubyflow).and_return true
 
         subject.ask_for_providers.should == [:reddit, :rubyflow]
+      end
+    end
+
+    describe "#post_to_providers" do
+      it 'instantiates each provider and calls #publish on it' do
+        args = {
+          :url     => 'http://rubygems.org/gems/my_gem',
+          :title   => 'Released MyGem!',
+          :tags    => ['ruby', 'bdd'],
+          :message => 'Hello!',
+        }
+        base = Base.new({:providers => [:reddit, :hackernews]}.update(args))
+        base.stub(:print)
+
+        hackernews = double :provider 
+        reddit = double :provider 
+
+        Provider::Hackernews.should_receive(:new).with(args).and_return hackernews
+        Provider::Reddit.should_receive(:new).with(args).and_return reddit
+
+        hackernews.should_receive(:publish)
+        reddit.should_receive(:publish)
+
+        base.post_to_providers
       end
     end
 

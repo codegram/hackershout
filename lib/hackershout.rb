@@ -1,8 +1,10 @@
 require 'hackershout/output'
 require 'hackershout/provider'
+require 'hackershout/provider/base'
+require 'hackershout/provider/reddit'
+require 'hackershout/provider/hackernews'
+require 'hackershout/provider/rubyflow'
 require 'hackershout/base'
-require 'nokogiri'
-require 'mechanize'
 
 module Hackershout
   class << self
