@@ -31,7 +31,7 @@ module Hackershout
 
     def ask_for_url
       print "Type the URL you want to share: "
-      gets.chomp.strip
+      gets.chomp.strip << "?utm_source=hackershout"
     end
 
     def ask_for_title

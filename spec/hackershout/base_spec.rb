@@ -53,10 +53,10 @@ module Hackershout
     end
 
     describe "#ask_for_url" do
-      it 'asks for the url and returns it' do
+      it 'asks for the url and returns it with appended metainformation' do
         subject.should_receive(:print).with("Type the URL you want to share: ")
         subject.should_receive(:gets).and_return '  http://rubygems.org/gems/my_gem '
-        subject.ask_for_url.should == 'http://rubygems.org/gems/my_gem'
+        subject.ask_for_url.should == 'http://rubygems.org/gems/my_gem?utm_source=hackershout'
       end
     end
 

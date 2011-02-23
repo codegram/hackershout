@@ -3,14 +3,12 @@ require 'spec_helper'
 module Hackershout
   describe Provider do
 
-    describe "#list" do
-      it 'returns a hash' do
-        subject.list.should == {
-          :reddit => 'Ruby Reddit',
-          :hackernews => 'Hackernews',
-          :rubyflow => 'RubyFlow',
-        }
-      end
+    before do
+      subject.stub(:list).and_return({
+        :reddit => 'Ruby Reddit',
+        :hackernews => 'Hackernews',
+        :rubyflow => 'RubyFlow',
+      })
     end
 
     describe "#wants?(provider)" do
@@ -52,8 +50,8 @@ module Hackershout
 
       context "if the file doesn't even exist" do
         it 'asks for the credentials as well' do
-          File.stub(:read).and_raise Errno::ENOENT
-          subject.should_receive(:ask_for_credentials).with(:reddit)
+          File.stub(:exists?).and_return false
+          subject.should_receive(:ask_for_credentials).with(:reddit).and_return({"reddit" => {"login" => "login", "password" => "password"}})
           subject.send(:check_credentials_for, :reddit)
         end
       end
@@ -71,6 +69,7 @@ module Hackershout
         file.should_receive(:write).with "\nreddit:"
         file.should_receive(:write).with "\n  login: my.email@gmail.com"
         file.should_receive(:write).with "\n  password: mypassword"
+        file.should_receive(:write).with "\n"
 
         subject.send(:ask_for_credentials, :reddit)
       end

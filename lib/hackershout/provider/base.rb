@@ -12,7 +12,7 @@ module Hackershout
 
       def initialize(options = {})
         @name = self.class.name.split("::").last
-        @url = options[:url]
+        @url = options[:url] << "&utm_medium=#{@name.downcase}"
         @title = options[:title]
         @tags = options[:tags]
         @message = options[:message]

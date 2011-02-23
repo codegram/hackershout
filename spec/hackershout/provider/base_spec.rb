@@ -23,6 +23,7 @@ module Hackershout
           base.instance_variable_get(:@login).should eq('my.email@gmail.com')
           base.instance_variable_get(:@password).should eq('mypassword')
           base.instance_variable_get(:@agent).should be_a(Mechanize)
+          base.instance_variable_get(:@url).should == 'url&utm_medium=base'
         end
       end
 
